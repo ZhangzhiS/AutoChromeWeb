@@ -66,6 +66,75 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: "/user",
+    name: "User",
+    component: Layout,
+    meta: { hidden: false, title: "用户管理", icon: "el-icon-User" },
+    redirect: "/user/list",
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/user/index.vue"),
+        name: "UserList",
+        meta: {
+          hidden: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/devices",
+    name: "Devices",
+    component: Layout,
+    meta: { hidden: false, title: "设备管理", icon: "el-icon-Monitor" },
+    redirect: "/devices/list",
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/devices/index.vue"),
+        name: "DevicesList",
+        meta: {
+          hidden: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "/payment",
+    name: "Payment",
+    component: Layout,
+    redirect: "/payment/sub",
+    meta: {
+      title: "交易管理",
+      icon: "el-icon-Shop",
+      hidden: false,
+      alwaysShow: false,
+      params: null,
+    },
+    children: [
+      {
+        path: "sub",
+        component: () => import("@/views/goods/index.vue"),
+        name: "Subscribe",
+        meta: {
+          title: "订阅管理",
+          icon: "el-icon-Lollipop",
+          hidden: false,
+        },
+      },
+      {
+        path: "order",
+        component: () => import("@/views/system/role/index.vue"),
+        name: "Order",
+        meta: {
+          title: "订单管理",
+          icon: "el-icon-Tickets",
+          hidden: false,
+        },
+      },
+    ],
+  },
 ];
 
 /**

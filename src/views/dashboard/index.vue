@@ -388,14 +388,14 @@ const getNoticeLevelTag = (type: number) => {
 };
 
 function connectWebSocket() {
-  WebSocketManager.getOrCreateClient("/topic/onlineUserCount", (message) => {
-    onlineUserCount.value = JSON.parse(message);
-  });
+  // WebSocketManager.getOrCreateClient("/topic/onlineUserCount", (message) => {
+  //   onlineUserCount.value = JSON.parse(message);
+  // });
 }
 
 onMounted(() => {
-  loadVisitStatsData();
-  connectWebSocket();
+  // loadVisitStatsData();
+  // connectWebSocket();
 });
 </script>
 

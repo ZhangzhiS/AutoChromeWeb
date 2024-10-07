@@ -71,30 +71,29 @@ const noticeDetailRef = ref();
 
 // 获取未读消息列表并连接 WebSocket
 onMounted(() => {
-  NoticeAPI.getMyNoticePage({ pageNum: 1, pageSize: 5, isRead: 0 }).then(
-    (data) => {
-      messages.value = data.list;
-    }
-  );
-
-  WebSocketManager.subscribeToTopic("/user/queue/message", (message) => {
-    console.log("收到消息：", message);
-    const data = JSON.parse(message);
-    const id = data.id;
-    if (!messages.value.some((msg) => msg.id === id)) {
-      messages.value.unshift({
-        id,
-        title: data.title,
-      });
-
-      ElNotification({
-        title: "您收到一条新的通知消息！",
-        message: data.title,
-        type: "success",
-        position: "bottom-right",
-      });
-    }
-  });
+  // NoticeAPI.getMyNoticePage({ pageNum: 1, pageSize: 5, isRead: 0 }).then(
+  //   (data) => {
+  //     messages.value = data.list;
+  //   }
+  // );
+  // WebSocketManager.subscribeToTopic("/user/queue/message", (message) => {
+  //   console.log("收到消息：", message);
+  //   const data = JSON.parse(message);
+  //   const id = data.id;
+  //   if (!messages.value.some((msg) => msg.id === id)) {
+  //     messages.value.unshift({
+  //       id,
+  //       title: data.title,
+  //     });
+  //
+  //     ElNotification({
+  //       title: "您收到一条新的通知消息！",
+  //       message: data.title,
+  //       type: "success",
+  //       position: "bottom-right",
+  //     });
+  //   }
+  // });
 });
 
 // 阅读通知公告

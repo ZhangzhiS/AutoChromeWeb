@@ -1,7 +1,6 @@
 import request from "@/utils/request";
-import { AxiosPromise, AxiosResponse } from "axios";
 
-const USER_BASE_URL = "/api/v1/users";
+const USER_BASE_URL = "/api/v1/sys";
 
 class UserAPI {
   /**
@@ -11,7 +10,7 @@ class UserAPI {
    */
   static getInfo() {
     return request<any, UserInfo>({
-      url: `${USER_BASE_URL}/me`,
+      url: `${USER_BASE_URL}/users/me`,
       method: "get",
     });
   }
@@ -23,7 +22,7 @@ class UserAPI {
    */
   static getPage(queryParams: UserPageQuery) {
     return request<any, PageResult<UserPageVO[]>>({
-      url: `${USER_BASE_URL}/page`,
+      url: `${USER_BASE_URL}/users/page`,
       method: "get",
       params: queryParams,
     });
@@ -37,7 +36,7 @@ class UserAPI {
    */
   static getFormData(userId: number) {
     return request<any, UserForm>({
-      url: `${USER_BASE_URL}/${userId}/form`,
+      url: `${USER_BASE_URL}/users/${userId}/detail`,
       method: "get",
     });
   }
@@ -235,66 +234,49 @@ export interface UserInfo {
  */
 export interface UserPageQuery extends PageQuery {
   /** 搜索关键字 */
-  keywords?: string;
+  email?: string;
 
   /** 用户状态 */
   status?: number;
 
-  /** 部门ID */
-  deptId?: number;
-
-  /** 开始时间 */
-  createTime?: [string, string];
+  /** 用户ID */
+  user_id?: string;
 }
 
 /** 用户分页对象 */
 export interface UserPageVO {
-  /** 用户头像URL */
-  avatar?: string;
   /** 创建时间 */
-  createTime?: Date;
-  /** 部门名称 */
-  deptName?: string;
+  id?: number;
+  user_id?: string;
+  create_time?: Date;
   /** 用户邮箱 */
   email?: string;
-  /** 性别 */
-  genderLabel?: string;
-  /** 用户ID */
-  id?: number;
-  /** 手机号 */
-  mobile?: string;
-  /** 用户昵称 */
-  nickname?: string;
-  /** 角色名称，多个使用英文逗号(,)分割 */
-  roleNames?: string;
   /** 用户状态(1:启用;0:禁用) */
   status?: number;
   /** 用户名 */
-  username?: string;
+  invite_code?: string;
+}
+
+export interface UserDevices {
+  id?: number;
+  device_code?: string;
+  status?: number;
+  vip_expire?: Date;
 }
 
 /** 用户表单类型 */
 export interface UserForm {
-  /** 用户头像 */
-  avatar?: string;
-  /** 部门ID */
-  deptId?: number;
-  /** 邮箱 */
-  email?: string;
-  /** 性别 */
-  gender?: number;
-  /** 用户ID */
   id?: number;
-  /** 手机号 */
-  mobile?: string;
-  /** 昵称 */
-  nickname?: string;
-  /** 角色ID集合 */
-  roleIds?: number[];
-  /** 用户状态(1:正常;0:禁用) */
+  /** 创建时间 */
+  create_time?: Date;
+  /** 用户邮箱 */
+  email?: string;
+  user_id?: string;
+  /** 用户状态(1:启用;0:禁用) */
   status?: number;
   /** 用户名 */
-  username?: string;
+  invite_code?: string;
+  devices?: UserDevices[];
 }
 
 /** 个人中心用户信息 */

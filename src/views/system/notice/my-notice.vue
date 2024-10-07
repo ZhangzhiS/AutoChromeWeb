@@ -124,15 +124,15 @@ const queryParams = reactive<NoticePageQuery>({
 
 /** 查询通知公告 */
 function handleQuery() {
-  loading.value = true;
-  NoticeAPI.getMyNoticePage(queryParams)
-    .then((data) => {
-      pageData.value = data.list;
-      total.value = data.total;
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+  // loading.value = true;
+  // NoticeAPI.getMyNoticePage(queryParams)
+  //   .then((data) => {
+  //     pageData.value = data.list;
+  //     total.value = data.total;
+  //   })
+  //   .finally(() => {
+  //     loading.value = false;
+  //   });
 }
 
 /** 重置通知公告查询 */

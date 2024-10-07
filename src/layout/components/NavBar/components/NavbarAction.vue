@@ -1,15 +1,6 @@
 <template>
   <div class="flex">
     <template v-if="!isMobile">
-      <!--搜索 -->
-      <menu-search />
-      <!--全屏 -->
-      <div class="nav-action-item" @click="toggle">
-        <svg-icon
-          :icon-class="isFullscreen ? 'fullscreen-exit' : 'fullscreen'"
-        />
-      </div>
-
       <!-- 布局大小 -->
       <el-tooltip
         :content="$t('sizeSelect.tooltip')"
@@ -19,9 +10,6 @@
         <size-select class="nav-action-item" />
       </el-tooltip>
 
-      <!-- 语言选择 -->
-      <lang-select class="nav-action-item" />
-
       <!-- 消息通知 -->
       <notice class="nav-action-item" />
     </template>
@@ -29,10 +17,6 @@
     <!-- 用户头像 -->
     <el-dropdown class="nav-action-item" trigger="click">
       <div class="flex-center h100% p10px">
-        <img
-          :src="userStore.user.avatar + '?imageView2/1/w/80/h/80'"
-          class="rounded-full mr-10px w24px h24px"
-        />
         <span>{{ userStore.user.username }}</span>
       </div>
       <template #dropdown>
@@ -82,8 +66,6 @@ const settingStore = useSettingsStore();
 const route = useRoute();
 const router = useRouter();
 const isMobile = computed(() => appStore.device === DeviceEnum.MOBILE);
-
-const { isFullscreen, toggle } = useFullscreen();
 
 /** 打开个人中心 */
 function handleOpenUserProfile() {

@@ -152,13 +152,13 @@ const calculateDateRange = () => {
 
 /** 加载数据 */
 const loadData = () => {
-  const { startDate, endDate } = calculateDateRange();
-  StatsAPI.getVisitTrend({
-    startDate,
-    endDate,
-  } as VisitTrendQuery).then((data) => {
-    setChartOptions(data);
-  });
+  // const { startDate, endDate } = calculateDateRange();
+  // StatsAPI.getVisitTrend({
+  //   startDate,
+  //   endDate,
+  // } as VisitTrendQuery).then((data) => {
+  //   setChartOptions(data);
+  // });
 };
 
 const handleDateRangeChange = () => {
