@@ -125,7 +125,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
       {
         path: "order",
-        component: () => import("@/views/system/role/index.vue"),
+        component: () => import("@/views/order/index.vue"),
         name: "Order",
         meta: {
           title: "订单管理",

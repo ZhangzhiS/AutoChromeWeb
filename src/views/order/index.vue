@@ -1,28 +1,18 @@
-<!-- 设备管理 -->
 <template>
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item label="设备ID" prop="device_id">
+        <el-form-item label="邮箱" prop="order_no">
           <el-input
-            v-model="queryParams.device_id"
-            placeholder="设备ID"
-            clearable
-            style="width: 200px"
-            @keyup.enter="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label="设备码" prop="device_id">
-          <el-input
-            v-model="queryParams.device_code"
-            placeholder="设备码"
+            v-model="queryParams.order_no"
+            placeholder="订单号"
             clearable
             style="width: 200px"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
 
-        <el-form-item label="UID" prop="keywords">
+        <el-form-item label="UID" prop="user_id">
           <el-input
             v-model="queryParams.user_id"
             placeholder="UID"
@@ -31,17 +21,32 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-
-        <el-form-item label="状态" prop="status">
-          <el-select
-            v-model="queryParams.status"
-            placeholder="全部"
+        <el-form-item label="交易类型" prop="hash_type">
+          <el-input
+            v-model="queryParams.hash_type"
+            placeholder="交易类型"
             clearable
-            class="!w-[100px]"
-          >
-            <el-option label="正常" :value="1" />
-            <el-option label="禁用" :value="0" />
-          </el-select>
+            style="width: 200px"
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="商品名称" prop="goods_name">
+          <el-input
+            v-model="queryParams.goods_name"
+            placeholder="商品名称"
+            clearable
+            style="width: 200px"
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="商品Code" prop="goods_code">
+          <el-input
+            v-model="queryParams.goods_code"
+            placeholder="UID"
+            clearable
+            style="width: 200px"
+            @keyup.enter="handleQuery"
+          />
         </el-form-item>
 
         <el-form-item>
@@ -60,46 +65,26 @@
     <el-card shadow="never" class="table-container">
       <el-table v-loading="loading" :data="pageData">
         <el-table-column
-          key="id"
-          label="ID"
+          key="order_no"
+          label="订单号"
           align="center"
-          prop="id"
+          prop="order_no"
           width="80"
         />
         <el-table-column
-          key="device_id"
-          label="设备ID"
+          key="goods_name"
+          label="商品名称"
           align="center"
-          prop="device_id"
+          prop="goods_name"
         />
 
-        <el-table-column
-          label="设备码"
-          width="150"
-          align="center"
-          prop="device_code"
-        />
-
-        <el-table-column label="状态" align="center" prop="status" width="100">
-          <template #default="scope">
-            <el-tag :type="scope.row.status == 1 ? 'success' : 'info'">
-              {{ scope.row.status == 1 ? "正常" : "禁用" }}
-            </el-tag>
-          </template>
-        </el-table-column>
+        <el-table-column label="付款金额" align="center" prop="payment_price" />
+        <el-table-column label="交易类型" align="center" prop="hash_type" />
 
         <el-table-column
           label="创建时间"
           align="center"
           prop="create_time"
-          width="180"
-          :formatter="formatDateTime"
-        />
-
-        <el-table-column
-          label="VIP过期时间"
-          align="center"
-          prop="vip_expire"
           width="180"
           :formatter="formatDateTime"
         />
@@ -142,67 +127,19 @@
       append-to-body
       @close="handleCloseDialog"
     >
-      <el-form ref="deviceFormRef" :model="formData" label-width="80px">
-        <el-form-item label="设备码" prop="device_code">
-          <el-input v-model="formData.device_code" maxwidth="30" disabled />
+      <el-form
+        ref="orderFormRef"
+        :model="formData"
+        :rules="rules"
+        label-width="80px"
+      >
+        <el-form-item label="订单号" prop="order_no">
+          <el-input v-model="formData.order_no" maxwidth="30" disabled />
         </el-form-item>
-        <el-form-item label="设备ID" prop="device_id">
-          <el-input v-model="formData.device_id" maxlength="30" disabled />
-        </el-form-item>
-
-        <el-form-item label="状态" prop="status">
-          <el-switch
-            v-model="formData.status"
-            inline-prompt
-            active-text="正常"
-            inactive-text="禁用"
-            :active-value="1"
-            :inactive-value="0"
-            disabled
-          />
+        <el-form-item label="商品名称" prop="goods_name">
+          <el-input v-model="formData.goods_name" maxlength="30" disabled />
         </el-form-item>
       </el-form>
-      <el-card shadow="never" class="table-container">
-        <el-table v-loading="loading" :data="formData.orders">
-          <el-table-column
-            key="order_no"
-            label="订单号"
-            align="center"
-            prop="order_no"
-            width="180"
-          />
-          <el-table-column label="名称" align="center" prop="gods_name" />
-          <el-table-column label="交易" align="center" prop="hash_type" />
-          <el-table-column
-            label="订单时间"
-            align="center"
-            prop="create_time"
-            width="180"
-            :formatter="formatDateTime"
-          />
-          <el-table-column label="操作" fixed="right" width="100">
-            <template #default="scope">
-              <el-button
-                type="primary"
-                link
-                size="small"
-                @click="handleOpenDialog(scope.row.id)"
-              >
-                <i-ep-view />
-                查看
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-
-        <pagination
-          v-if="total > 0"
-          v-model:total="total"
-          v-model:page="queryParams.page"
-          v-model:limit="queryParams.size"
-          @pagination="handleQuery"
-        />
-      </el-card>
 
       <template #footer>
         <div class="dialog-footer">
@@ -216,24 +153,20 @@
 
 <script setup lang="ts">
 defineOptions({
-  name: "Devices",
+  name: "Order",
   inheritAttrs: false,
 });
 
-import DevicesAPI, {
-  DevicesForm,
-  DevicesPageQuery,
-  DevicesPageVO,
-} from "@/api/devices";
+import UserAPI, { OrderForm, OrderPageQuery, OrderPageVO } from "@/api/order";
 
 const queryFormRef = ref(ElForm);
-const deviceFormRef = ref(ElForm);
+const orderFormRef = ref(ElForm);
 
 const loading = ref(false);
 const removeIds = ref([]);
 const total = ref(0);
-const pageData = ref<DevicesPageVO[]>();
-const queryParams = reactive<DevicesPageQuery>({
+const pageData = ref<OrderPageVO[]>();
+const queryParams = reactive<OrderPageQuery>({
   page: 1,
   size: 10,
 });
@@ -243,14 +176,22 @@ const dialog = reactive({
   title: "",
 });
 
-const formData = reactive<DevicesForm>({
-  status: 1,
+const formData = reactive<OrderForm>({});
+
+const rules = reactive({
+  email: [
+    {
+      pattern: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/,
+      message: "请输入正确的邮箱地址",
+      trigger: "blur",
+    },
+  ],
 });
 
 /** 查询 */
 function handleQuery() {
   loading.value = true;
-  DevicesAPI.getPage(queryParams)
+  UserAPI.getPage(queryParams)
     .then((data) => {
       pageData.value = data.list;
       total.value = data.total;
@@ -265,55 +206,45 @@ function handleResetQuery() {
   queryFormRef.value.resetFields();
   queryParams.page = 1;
   queryParams.size = 10;
-  queryParams.user_id = "";
-  queryParams.device_id = "";
-  queryParams.device_code = "";
   handleQuery();
 }
 
-/**
- * 打开弹窗
- *
- * @param id ID
- */
 async function handleOpenDialog(id?: number) {
   dialog.visible = true;
   if (id) {
-    dialog.title = "设备信息";
-    DevicesAPI.getFormData(id).then((data) => {
+    dialog.title = "用户信息";
+    UserAPI.getFormData(id).then((data) => {
       Object.assign(formData, { ...data });
     });
   } else {
-    dialog.title = "";
+    dialog.title = "新增用户";
   }
 }
 
 /** 关闭弹窗 */
 function handleCloseDialog() {
   dialog.visible = false;
-  deviceFormRef.value.resetFields();
-  deviceFormRef.value.clearValidate();
+  orderFormRef.value.resetFields();
+  orderFormRef.value.clearValidate();
 
   formData.id = undefined;
-  formData.status = 1;
 }
 
-/** 删除 */
 function handleDelete(id?: number) {
-  const deviceIds = [id || removeIds.value].join(",");
-  if (!deviceIds) {
+  const orderIds = [id || removeIds.value].join(",");
+  if (!orderIds) {
     ElMessage.warning("请勾选删除项");
     return;
   }
 
-  ElMessageBox.confirm("确认删除?", "警告", {
+  ElMessageBox.confirm("确认删除用户?", "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   }).then(
     function () {
       loading.value = true;
-      DevicesAPI.deleteByIds(deviceIds)
+      UserAPI.deleteByIds(orderIds)
         .then(() => {
           ElMessage.success("删除成功");
           handleResetQuery();

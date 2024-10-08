@@ -4,11 +4,7 @@
       <template #header>
         <div class="flex-x-between">
           <div>
-            <el-button
-              v-hasPerm="['sys:user:add']"
-              type="success"
-              @click="handleOpenDialog()"
-            >
+            <el-button type="success" @click="handleOpenDialog()">
               <i-ep-plus />
               新增
             </el-button>
@@ -64,7 +60,6 @@
         <el-table-column label="操作" fixed="right" width="220">
           <template #default="scope">
             <el-button
-              v-hasPerm="['sys:user:edit']"
               type="primary"
               link
               size="small"
@@ -74,7 +69,6 @@
               查看
             </el-button>
             <el-button
-              v-hasPerm="['sys:user:delete']"
               type="danger"
               link
               size="small"
@@ -102,7 +96,7 @@
       append-to-body
       @close="handleCloseDialog"
     >
-      <el-form ref="userFormRef" :model="formData" label-width="180px">
+      <el-form ref="goodsFormRef" :model="formData" label-width="180px">
         <el-form-item label="商品名称" prop="goods_name">
           <el-input v-model="formData.goods_name" maxwidth="30" />
         </el-form-item>
@@ -152,13 +146,13 @@
 
 <script setup lang="ts">
 defineOptions({
-  name: "User",
+  name: "Goods",
   inheritAttrs: false,
 });
 import GoodsAPI, { GoodsForm, GoodsPageQuery, GoodsPageVO } from "@/api/goods";
 
 const queryFormRef = ref(ElForm);
-const userFormRef = ref(ElForm);
+const goodsFormRef = ref(ElForm);
 
 const loading = ref(false);
 const removeIds = ref([]);
@@ -220,8 +214,8 @@ async function handleOpenDialog(id?: number) {
 /** 关闭弹窗 */
 function handleCloseDialog() {
   dialog.visible = false;
-  userFormRef.value.resetFields();
-  userFormRef.value.clearValidate();
+  goodsFormRef.value.resetFields();
+  goodsFormRef.value.clearValidate();
 
   formData.id = undefined;
   formData.status = 1;
@@ -229,8 +223,8 @@ function handleCloseDialog() {
 
 /** 删除 */
 function handleDelete(id?: number) {
-  const userIds = [id || removeIds.value].join(",");
-  if (!userIds) {
+  const goodsIds = [id || removeIds.value].join(",");
+  if (!goodsIds) {
     ElMessage.warning("请勾选删除项");
     return;
   }
@@ -242,7 +236,7 @@ function handleDelete(id?: number) {
   }).then(
     function () {
       loading.value = true;
-      GoodsAPI.deleteByIds(userIds)
+      GoodsAPI.deleteByIds(goodsIds)
         .then(() => {
           ElMessage.success("删除成功");
           handleResetQuery();
@@ -256,12 +250,12 @@ function handleDelete(id?: number) {
 }
 
 const handleSubmit = useThrottleFn(() => {
-  userFormRef.value.validate((valid: any) => {
+  goodsFormRef.value.validate((valid: any) => {
     if (valid) {
-      const userId = formData.id;
+      const goodsId = formData.id;
       loading.value = true;
-      if (userId) {
-        GoodsAPI.update(userId, formData)
+      if (goodsId) {
+        GoodsAPI.update(goodsId, formData)
           .then(() => {
             ElMessage.success("修改成功");
             handleCloseDialog();
