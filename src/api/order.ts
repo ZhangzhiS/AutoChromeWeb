@@ -16,9 +16,9 @@ class OrderAPI {
     });
   }
 
-  static getFormData(userId: number) {
+  static getFormData(orderId: number) {
     return request<any, OrderForm>({
-      url: `${DEVICES_BASE_URL}/${userId}/detail`,
+      url: `${DEVICES_BASE_URL}/${orderId}/detail`,
       method: "get",
     });
   }

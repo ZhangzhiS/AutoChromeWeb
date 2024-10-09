@@ -157,7 +157,7 @@ defineOptions({
   inheritAttrs: false,
 });
 
-import UserAPI, { OrderForm, OrderPageQuery, OrderPageVO } from "@/api/order";
+import OrderAPI, { OrderForm, OrderPageQuery, OrderPageVO } from "@/api/order";
 
 const queryFormRef = ref(ElForm);
 const orderFormRef = ref(ElForm);
@@ -191,7 +191,7 @@ const rules = reactive({
 /** 查询 */
 function handleQuery() {
   loading.value = true;
-  UserAPI.getPage(queryParams)
+  OrderAPI.getPage(queryParams)
     .then((data) => {
       pageData.value = data.list;
       total.value = data.total;
@@ -212,12 +212,12 @@ function handleResetQuery() {
 async function handleOpenDialog(id?: number) {
   dialog.visible = true;
   if (id) {
-    dialog.title = "用户信息";
-    UserAPI.getFormData(id).then((data) => {
+    dialog.title = "信息";
+    OrderAPI.getFormData(id).then((data) => {
       Object.assign(formData, { ...data });
     });
   } else {
-    dialog.title = "新增用户";
+    dialog.title = "新增";
   }
 }
 
@@ -237,14 +237,14 @@ function handleDelete(id?: number) {
     return;
   }
 
-  ElMessageBox.confirm("确认删除用户?", "警告", {
+  ElMessageBox.confirm("确认删除?", "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   }).then(
     function () {
       loading.value = true;
-      UserAPI.deleteByIds(orderIds)
+      OrderAPI.deleteByIds(orderIds)
         .then(() => {
           ElMessage.success("删除成功");
           handleResetQuery();
